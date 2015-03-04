@@ -13,7 +13,7 @@ public sealed partial class MainWindow: Gtk.Window
 		Build ();
 	}
 
-	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
+	private void OnDeleteEvent (object sender, DeleteEventArgs a)
 	{
 		Application.Quit ();
 		a.RetVal = true;
@@ -22,7 +22,7 @@ public sealed partial class MainWindow: Gtk.Window
 
 	Matrix<double> c, o, r, g;
 
-	protected void buttonOpenClicked (object sender, EventArgs e)
+	private void buttonOpenClicked (object sender, EventArgs e)
 	{
 		try
 			{
@@ -71,7 +71,7 @@ public sealed partial class MainWindow: Gtk.Window
 		}
 	}
 
-	protected void buttonCalcClicked (object sender, EventArgs e)
+	private void buttonCalcClicked (object sender, EventArgs e)
 	{
 		try
 		{
