@@ -24,7 +24,7 @@ namespace EconToolsConsole
 
 				switch (Path.GetExtension (filename)) {
 				case ".xlsx":
-					var vals = Helpers.readData (filename);
+					var vals = Helpers.Helpers.readData (filename);
 
 					c = vals.Item1;
 					n = c.ColumnCount;
@@ -51,7 +51,7 @@ namespace EconToolsConsole
 
 					var eTable = DividendsCalc.DividendsCalc.penultimateTable(dtable, c, o, r);
 
-					Helpers.writeData(filename, s, dtable.Item1, eTable);
+					Helpers.Helpers.writeData(filename, s, dtable.Item1, eTable);
 
 					break;
 				default:
