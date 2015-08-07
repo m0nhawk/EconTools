@@ -1,0 +1,402 @@
+%
+\documentclass[a4paper,12pt,reqno]{amsart}
+\usepackage{etex}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{pictex}
+\usepackage{booktabs}
+\usepackage{cleveref}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+% \usepackage{harvard}
+\usepackage{amsthm}
+\usepackage{graphics,epsfig,verbatim,bm,latexsym,url,amsbsy}
+\usepackage{rotating}
+\usepackage[authoryear,round]{natbib}
+\bibliographystyle{ecta}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{mathrsfs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{url}
+\setlength{\textwidth}{6.25in} \setlength{\oddsidemargin}{0.in}
+\setlength{\textheight}{9.5in} \setlength{\topmargin}{0in}
+\setlength{\evensidemargin}{0.25in}
+\setlength{\parskip}{\medskipamount} \setlength{\parindent}{0pt}
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\belowdisplayskip}{0pt}
+\setlength{\captionwidth}{0in}
+% \setstretch{1.4}
+\renewcommand{\datename}{\textit{Date Printed}.}
+\newcommand{\tr}{\mathsf{T}}
+
+% \renewcommand{\cite}[1]{\citeyear{#1}}
+\theoremstyle{definition} \newtheorem{example}{Example}
+\theoremstyle{definition} \newtheorem{condition}{Condition}
+\theoremstyle{definition} \newtheorem{corollary}{Corollary}
+
+\theoremstyle{definition} \newtheorem{claim}{Claim}
+\theoremstyle{definition} \newtheorem{definition}{Definition}
+\theoremstyle{definition} \newtheorem{conjecture}{Conjecture}
+\theoremstyle{definition} \newtheorem{lemma}{Lemma}
+\theoremstyle{definition} \newtheorem{theorem}{Theorem}
+\theoremstyle{definition} \newtheorem*{theoremNoNumber}{Theorem}
+\theoremstyle{definition} \newtheorem*{lemmaCorrespondence}{Lemma \ref{lem:correspondence}}
+\theoremstyle{definition}\newtheorem{proposition}{Proposition}
+\theoremstyle{definition} \newtheorem{result}{Result}
+\theoremstyle{definition} \newtheorem*{definitionNoNumber}{Definition}
+\theoremstyle{definition} \newtheorem{assumption}{Assumption}
+\theoremstyle{definition} \newtheorem*{assumptionNoNumber}{Assumption}
+\theoremstyle{definition} \newtheorem*{fact}{Fact}
+\theoremstyle{definition} \newtheorem*{property}{Property}
+
+\theoremstyle{definition} \newtheorem{remark}{Remark}
+
+\newcommand{\class}{\mathcal{M}}
+\newcommand{\classmem}{\mathbf{M}}
+\newcommand{\classmement}{M}
+\newcommand{\scaleinv}{scale-invariant}
+\newcommand{\homth}{off-diagonal homogeneous of degree $1$}
+\newcommand{\niceclass}{\mathcal{C}}
+\newcommand{\niceclassmem}{\mathbf{C}}
+\newcommand{\niceclassmement}{C}
+\newcommand{\nicerclass}{\mathcal{P}}
+\newcommand{\nicerclassmem}{\mathbf{P}}
+\newcommand{\nicerclassmement}{P}
+\newcommand{\scaling}{\mathbf{S}}
+\newcommand{\B}{\mathbf{B}}
+\newcommand{\scalingent}{S}
+\newcommand{\dir}{\mathbf{D}}
+\newcommand{\specrad}{r}
+\newcommand{\specradnorm}{\rho}
+\newcommand{\zeroclass}{\mathcal{Z}}
+\newcommand{\zeroclassmem}{\mathbf{Z}}
+\newcommand{\zeroclassmement}{Z}
+\newcommand{\rowsum}{a}
+
+\newcommand{\homparam}{\gamma}
+
+\newcommand{\genclass}{\mathcal{A}}
+\newcommand{\genclassmem}{\mathbf{A}}
+\newcommand{\genclassmement}{A}
+
+\newcommand{\diagsiminv}{invariant to diagonal conjugation}
+\DeclareMathOperator{\interior}{int}
+
+\long\def\symbolfootnote[#1]#2{\begingroup%
+\def\thefootnote{\fnsymbol{footnote}}\footnote[#1]{#2}\endgroup}
+
+\usepackage{footnote}
+\makesavenoteenv{tabular}
+\usepackage{fancyhdr}
+\lhead{\textsc{\documenttitle}} \chead{} \rhead{\today\ / Page
+\thepage\ of \pageref{lastpage}}
+\newcommand{\documenttitle}{Thesis}
+
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\renewcommand{\max}{\operatornamewithlimits{max}}
+\renewcommand{\min}{\operatornamewithlimits{min}}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bes}{\begin{equation*}}
+\newcommand{\ees}{\end{equation*}}
+\newcommand{\mbf}{\mathbf}
+
+% blackboard bold symbols
+
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\renewcommand{\Pr}{\mathbb P}
+\renewcommand{\Im}{\text{Im}}
+
+% upward diagonal dots
+
+\newcommand{\rdots}{\mathinner{%
+  \mkern1mu\raise1pt\hbox{.}%
+  \mkern2mu\raise4pt\hbox{.}%
+  \mkern2mu\raise7pt\vbox{\kern7pt\hbox{.}}\mkern1mu}}
+
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\trace}{trace}
+\DeclareMathOperator{\Det}{Det}
+\DeclareMathOperator{\FLP}{FLP}
+\DeclareMathOperator{\DWH}{DWH}
+\DeclareMathOperator{\Mat}{Mat}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\plimPreliminary}{plim}
+\newcommand{\Ex}{\mathbf E}
+\newcommand{\N}{\mathbf N}
+\renewcommand{\Pr}{\mathbf P}
+\newcommand{\cent}{c}
+\newcommand{\centstat}{c^*}
+\newcommand{\vc}{v}
+\newcommand{\eye}{\mathbf{I}}
+\newcommand{\plim}{\plimPreliminary \displaylimits} % Probability limit
+
+%\input{packages}
+%\input{theoremStyle}
+%\input{commands}
+%\input{pageProperties}
+
+\allowdisplaybreaks
+
+\def\eproof{\hfill \hbox{\hskip3pt\vrule width4pt height8pt depth1.5pt}}
+
+\def\eproofwhite{\hfill $\square$}
+
+\begin{document}
+
+\title{Dividend Flow Calculator Documentation}
+\date{\today}
+\maketitle
+
+\bibliographystyle{ecta}
+
+\section{Input Specification}
+
+The tool takes one big Excel spreadsheet called {\tt CrossHoldings} as input. This spreadsheet contains: \begin{itemize} \item a table describing the ownership structure (who owns whom); \item a row for describing the incoming dividend income that we wish to simulate flowing around the system.\end{itemize}
+
+An example is given in {\tt Example Input.xlsx}.
+
+\subsection{Ownership Structure} \label{sec:ownership-input}
+
+The first part of the input is a table describing \emph{who owns whom}. 
+
+For every unit (company) in the system, there is both a row and a column in the spreadsheet. The entry in row $i$ and column $j$ describes what share of $j$ is owned by $i$. For example,  if a company called Acme owns 10 percent of a company called Bravo, then in row {\tt Acme} and column {\tt Bravo}, we put 10\% or 0.10 to capture that ownership share. By looking at the column of the table corresponding to a unit, we can read off who owns that unit. 
+
+Companies may also have \emph{outside shareholders}:\ for example, owners of publicly issued equity shares. Therefore, there is a row at the bottom of the spreadsheet called {\tt OUTSIDE}, where we put the outsiders' share.
+The numbers mentioned so far are given in the financial disclosures of a business group, or computed from them.
+
+After all these are accounted for, there may still be remaining  ownership shares. Therefore, there is a row at the bottom of the spreadsheet called {\tt REMAINDER}, where we put the whole remaining share of ownership. That is, in column $j$, row {\tt REMAINDER} we write 1 minus the sum of all other entries in that column.
+
+% \begin{figure}[H]
+% \includegraphics[width=4in]{table1sketch.pdf}
+% \caption*{TABLE 1. }
+% \end{figure}
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+ & Acme & Bravo & Comco \\
+\midrule
+Acme & 0\% & 10\% & 20\% \\
+Bravo & 0\% & 0\% & 15\% \\
+Comco & 12\% & 12\% & 0\% \\
+\midrule
+\midrule
+\uppercase{Outside} & 11\% & 21\% & 13\% \\
+\uppercase{Remainder} & 77\% & 57\% & 52\% \\
+\bottomrule
+\end{tabular}
+
+\end{center}
+
+% [[ANDREW: MAKE TABLE based on table1sketch.pdf -- small example version of our spreadsheet, as a LaTeX table -- to illustrate ]]
+
+If $n$ is the number of units in the system (in this case $n=3$), there are $n$ columns in the table,  and $n+2$ rows, as seen in the example table.
+\subsection{Dividends Generated}  \label{sec:dividends-input}
+ The final part of the input is a description of dividends that are generated at the system at various units. This is an injection of dividends that is of interest to the analyst, and is typically a hypothetical:\ what if Acme generated a \$100 dividend? Who would receive the money? This input is a single row of $n$ numbers, where $n$ is the number of units; the number in the column labeled by company $X$ describes the dividends generated at company $X$. 
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+ & Acme & Bravo & Comco  \\
+\midrule
+DIVIDENDS & 1000 & 0 & 0\\
+
+
+\bottomrule
+\end{tabular}
+\end{center}
+In {\tt Example Input.xlsx}, this row appears at the bottom of the input spreadsheet.
+
+\section{Model Overview}
+
+We use the data in the spreadsheet to build a  fluid flow model to describe how dividends travel. 
+
+
+\subsection{Nodes:\ Three Types per Unit}
+
+In this model, there are \emph{three nodes corresponding to each unit}. If $X$ is the name of a unit, these nodes are called $X, X^*$ and $X^\text{R}$. 
+
+First we discuss their names and then we explain what they do. The node $X$ (with no additional symbol)\ is called the \emph{distributing node} corresponding to unit $X$: it receives dividend flows and sends them other places. (These are blue in Figure \ref{fig:F}.) The node $X^*$ is the \emph{outside shareholders' receiving node}: it is a bucket that accumulates dividends that belong to outsiders. (These are red in Figure \ref{fig:F}.) And $X^\text{R}$ is the \emph{remainder (inside) receiving node}: it is a bucket that accumulates all remaining dividends. (These are green in Figure \ref{fig:F}.) 
+
+In the example shown in Figure \ref{fig:F}, there are three units: Unit A, Unit B, and Unit C. Each of them has three nodes. So, there are nodes A, A$^*$ and A$^\text{R}$ for the Unit A;  nodes B, B$^*$ and B$^\text{R}$ for the Unit B; and nodes C, C$^*$ and C$^\text{R}$ for Unit C. The conventional ordering for when these nodes are represented in list form will be $(\text{A},\text{B}, \text{C},\text{A}^*,\text{B}^*, \text{C}^*, \text{A}^\text{R},\text{B}^\text{R}, \text{C}^\text{R})$. In general, if there are $n$ units, there are $3n$ nodes in the system.
+
+\begin{figure}
+\begin{tikzpicture}[node distance=2cm,>=stealth',bend angle=45,auto]
+\tikzstyle{place}=[circle,thick,draw=blue!75,fill=blue!20,minimum size=6mm]
+\tikzstyle{outside}=[rectangle,thick,draw=red!75,fill=red!20,minimum size=8mm]
+\tikzstyle{remainder}=[rectangle,thick,draw=green!75,fill=green!20,minimum size=8mm]
+
+\node (gA) {$g_{\text{A}}$};
+\node (gB) [right=4cm of gA] {$g_{\text{B}}$};
+\node (gC) [right=4cm of gB] {$g_{\text{C}}$};
+
+\node[place] (A) [below of=gA] {$A$};
+\node[place] (B) [below of=gB] {$B$};
+\node[place] (C) [below of=gC] {$C$};
+
+\node[outside] (As) [below left=1.5cm of A] {$\text{A}^*$};
+\node[remainder] (Ar) [below right=1.5cm of A] {$\text{A}^R$};
+\node[outside] (Bs) [below left=1.5cm of B] {$\text{B}^*$};
+\node[remainder] (Br) [below right=1.5cm of B] {$\text{B}^R$};
+\node[outside] (Cs) [below left=1.5cm of C] {$\text{C}^*$};
+\node[remainder] (Cr) [below right=1.5cm of C] {$\text{C}^R$};
+
+\draw[-latex',double] (gA) -- (A);
+\draw[-latex',double] (gB) -- (B);
+\draw[-latex',double] (gC) -- (C);
+
+\draw[-latex'] (B) to[bend left=10] node[midway,above] {${F}_{\text{AB}}$} (A);
+\draw[-latex'] (C) to[bend right=20] node[near end,above] {${F}_{\text{AC}}$} (A);
+\draw[-latex'] (C) to[bend left=10] node[midway,above] {${F}_{\text{BC}}$} (B);
+
+\draw[-latex',double] (A) -- node[midway,left] {${F}_{\text{AA}^*}$} (As);
+\draw[-latex',double] (A) -- node[midway,right] {${F}_{\text{AA}^R}$} (Ar);
+\draw[-latex',double] (B) -- node[midway,left] {${F}_{\text{BB}^*}$} (Bs);
+\draw[-latex',double] (B) -- node[midway,right] {${F}_{\text{BB}^R}$} (Br);
+\draw[-latex',double] (C) -- node[midway,left] {${F}_{\text{CC}^*}$} (Cs);
+\draw[-latex',double] (C) -- node[midway,right] {${F}_{\text{CC}^R}$} (Cr);
+\end{tikzpicture}
+% \includegraphics[width=5in]{figure1sketch.pdf}
+\caption{An illustration of the key parts of the dividend flow model. In subscripts of $F$, the row is listed first, then the column. }
+%[[ANDREW: Insert Figure 1 once you have rendered it from the sketch {\tt figure 1 sketch.pdf}. Check all the references to Figure 1 below work.]]
+\label{fig:F}
+\end{figure}
+\subsection{The Flow Matrix}We construct a matrix to describe flows between all the nodes, based on the numbers in the spreadsheet. This matrix is called $\mathbf{F}$. If $i$ and $j$ are two nodes (of any type), then the entry $F_{ij}$ describes what fraction  of the value that is at node $j$ is owed to (\emph{flows to}) node $i$. We will describe the details of how to construct $\mathbf{F}$ from the input spreadsheet later, in \cref{sec:constructing-F}.
+
+\subsection{The Discrete-Time Dynamics} The core task of the model is to keep track of how money flows around the system. To this end, it keeps track of where the initially injected money is at every ``time step'' of the dividend flow. This information is kept in a vector or list $\mathbf{d}(t)$, with $d_i(t)$ telling us how much money there is at node $i$ at time $t$. The rest of this section expands on this. The rest of this subsection discusses the details.
+
+Time is discrete and indexed by $t=0,1,2,\ldots$. If at time $t$ the amounts of dividends at various nodes are given by a vector\footnote{All vectors are column vectors unless otherwise noted.} of length $3n$, namely $\mathbf{d}(t)$, then the amounts of dividends at various nodes at time $t+1$ are given, in matrix notation, by \be \label{eq:dynamics} \mathbf{d}(t+1) = \mathbf{F} \mathbf{d}(t)=\mathbf{F}^t \mathbf{d}(0).\ee That is, the amount of dividends at unit $i$ at time $t+1$ is $$d_i(t+1) = \sum_{j} F_{ij} d_j(t):$$ the node $i$ receives a share $F_{ij}$ of what was at $j$ the previous period. This gives us a dynamic picture of how dividends accumulate, and it is the key equation for the calculations.
+
+\subsection{The Initial Injection of Generated Dividends} The initial stream of dividends generated is described by a vector $\mathbf{d}(0)=\mathbf{g}$ of length $n$. (Recall section  \ref{sec:dividends-input}.) Its entries are indexed by the names of the units.  If distributing node X generates a dividend of $ \$D $, then $g_X=D$. From this we will construct $\mathbf{d}(0)$, a vector of length $3n$, in the following way. The first $n$\ entries are set to $\mathbf{g}$. For any outsiders' receiving node $X^*$ we set $d_{X^*}(0)=0$, and similarly for any remainder receiving node.
+
+\subsection{What the Model Outputs} Now that we have described the key  parts, what the model does is as follows: it makes the flow matrix $\mathbf{F}$ from the data described in section \ref{sec:ownership-input}; it takes the generated dividends as input from the data described in section \ref{sec:dividends-input}. Then, with $\mathbf{d}(0)$ set based on $\mathbf{g}$ as above, it computes the vector (\ref{eq:dynamics}) for $t=1,2,\ldots$ until the difference between $\mathbf{d}(t+1)$ and $\mathbf{d}(t)$ is less than a given tolerance (say $\epsilon=10^{-6}$) in every entry. Call the number of periods it takes for this to happen $T$. The vectors $\mathbf{d}(t)$ for $t=1,2,\ldots,T$ tell us where the dividends are at each unit of time.
+
+This is the core calculation done by the model. We will then output numbers derived from this calculation in several useful ways, which we now describe. These end up in separate output spreadsheets. See section \ref{sec:output-spec} for output formats and section \ref{sec:implementation} for formulas to generate these outputs.
+
+
+\begin{enumerate}
+\item \emph{The dynamic dividend table.} For a given spreadsheet and initial dividends $\mathbf{g}$, we will output is the sequence of $\mathbf{d}(t)$, for $t=1,2,\ldots,T$, as discussed above. This describes where dividends are at each stage of the process.
+
+
+\item \emph{The (ultimate)\ ownership  table.} We will also return an ownership table describing what fraction of each distributing node $j$ is ultimately or ``actually'' owned by each receiving node $i$. For example, what fraction of the dividends that enter at distributing node A ultimately arrive at receiving node B$^*$?  This calculation does not need $\mathbf{g}$ as input. Details on how this calculation is performed are in section \ref{sec:compute-S}.
+
+\item \emph{The penultimate exit table.} For a given cross-holdings structure and initial injection of dividends $\mathbf{g}$, we will also output a matrix that tells us where the dividends are right  \emph{before} they come to the distributing node that ultimately discharges them (to a receiving node, where they stay after that). This is especially useful when all the dividends exit at one or two distributing nodes, but we care about where the dollars that exit at those nodes are residing before that.
+
+So, for example, if a dividend of \$1 arrives at distributing node A, then is sent in full to distributing node B, and then is spit out by B to the outsiders' receiving node B$^\text{*}$, we say the penultimate exit of that \$1 was at A. For a dollar of dividends that is \emph{generated} at A and is immediately spit out into a receiving node from A, we say its penultimate exit is at A. For details on computation of this, see section \ref{sec:compute-E}. 
+
+\end{enumerate}
+
+\section{Output Specification} \label{sec:output-spec}
+
+We will illustrate the outputs for the example cross-holdings given in the  example of section  \ref{sec:ownership-input} and the initial dividend vector $\mathbf{g}=[1000,0,0]^\tr$ specified in section  \ref{sec:dividends-input}. These tables are in Excel format in {\tt Example Input with Output.xlsx},
+
+\begin{enumerate}
+\item The dynamic dividend table  looks as follows.
+The entry in row $i$ and column $t$ tells us the amount of dividends there are at node $i$ at time $t$. Dividends flow through the distributing nodes, and accumulate at the other (receiving)\ nodes. Note that the first three rows of $\mathbf{d}(0)$ will simply be equal to the initial injection of dividends that was discussed in section \ref{sec:dividends-input}. \bigskip
+\begin{center}
+\begin{tabular}{lllll}
+\toprule
+ & $\mathbf{d}(0)$ & $\mathbf{d}(1)$ & $\mathbf{d}(2)$ & $\cdots$ \\
+\midrule
+Acme & 1000.00 & 0 & 24.00 &\\
+Bravo & 0 & 0 & 18.00&\\
+Comco & 0 & 120.00 & 0 & \\
+\midrule
+\midrule
+Acme$^*$ (outside) & 0 & 110.00 & 110.00 & \\
+Bravo$^*$ (outside)  & 0 & 0 & 0 & \\
+Comco$^*$ (outside)  & 0 & 0 & 15.60 & \\
+\midrule
+\midrule
+Acme$^\text{R}$ (remainder) & 0 & 770.00 & 770.00 & \\
+Bravo$^\text{R}$ (remainder)  & 0 & 0 & 0 & \\
+Comco$^\text{R}$ (remainder)  & 0 & 0 & 62.40& \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\bigskip
+
+\item The ownership structure output table looks as follows.
+The entry in row $i$ and column $j$ tells us how much of the dividends that are generated at the distributing node in column $j$ ultimately accrue to the node in row $i$ (as a fraction). \bigskip
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+ & Acme & Bravo & Comco  \\
+
+\midrule
+Acme$^*$ (outside) & 0.113 & 0.043 & 0.025  \\
+Bravo$^*$ (outside)  & 0.004 & 0.214 & 0.033  \\
+Comco$^*$ (outside)  & 0.163 & 0.079 & 0.136  \\
+\midrule
+\midrule
+Acme$^\text{R}$ (remainder) & 0.791 & 0.100 & 0.173  \\
+Bravo$^\text{R}$ (remainder)  & 0.011 & 0.582 & 0.089  \\
+Comco$^\text{R}$ (remainder)  & 0.065 & 0.072 & 0.544 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\bigskip
+\item The penultimate exit table output looks as follows.
+The entry in row $i$ and column $j$ tells us:\ of all the dividends that ultimately exited at node $i$, what amount of them were at node $j$ before they arrived at the distributing node corresponding to node $i$? For example, of all the dividends that ultimately exited at the outside shareholders of Acme (i.e., at node Acme$^*$), what amount of them went through Bravo immediately before they arrived at Acme to be discharged? \bigskip
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+ & Acme & Bravo & Comco  \\
+
+\midrule
+Acme$^*$ (outside) & 110.00 & 0.21 & 2.77  \\
+Bravo$^*$ (outside)  & 0 & 0 & 3.95  \\
+Comco$^*$ (outside)  & 16.02 & 0.29 & 0  \\
+\midrule
+\midrule
+Acme$^\text{R}$ (remainder) & 770.00 & 1.45 & 19.33  \\
+Bravo$^\text{R}$ (remainder)  & 0 & 0 & 10.73  \\
+Comco$^\text{R}$ (remainder)  & 64.08 & 1.18 & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{enumerate}
+\newpage
+
+\section{Computational Details of Implementation} \label{sec:implementation}
+
+\subsection{Constructing the Matrix $\mathbf{F}$}  \label{sec:constructing-F} We first construct a matrix $\mathbf{C}$ describing cross-holdings from data in the input spreadsheet. 
+
+We will illustrate using the example described in section  \ref{sec:ownership-input} above, and use the shorthand A=Acme, B=Bravo, C=Comco. We have $$ \mathbf{C} = \left[ \begin{array}{ccc} 0 & 0.10 & 0.20 \\ 0 & 0 & 0.15 \\ 0.12 & 0.12 & 0\end{array} \right].$$ We also construct a vector corresponding to outsiders' shareholdings. In the example above, this is: $$ \mathbf{o}= [0.11, 0.21, 0.13 ]^\tr.$$    Finally, we construct a vector corresponding to the remainder shareholdings. In the example above, this is $$ \mathbf{r}= [0.77, 0.57, 0.52 ]^\tr.$$
+
+Now we define $\mathbf{F}$. If $i$ and $j$ are both distributing nodes, we let $F_{ij}=C_{ij}$. If $j=X$ is a distributing node and $i=X^*$ is the outside shareholders' receiving node corresponding to the same unit, then $F_{ij}=o_j$. And if $j=X$ is a distributing node and $i=X^\text{R}$ is its remainder receiving node corresponding to the same unit, then $F_{ij} = r_j $. 
+
+For any $i$ that is an outsiders' receiving node, $i=X^*$, we have $X_{ij}=1$ when $j=X^*$, and $0$ otherwise. Similarly, for any $i$ that is a remainder receiving node, $i=X^\text{R}$, we have $X_{ij}=1$ when $j=X^*$, and $0$ otherwise 
+
+So in the example above, let us fix the ordering of nodes $(\text{A},\text{B}, \text{C},\text{A}^*,\text{B}^*, \text{C}^*, \text{A}^\text{R},\text{B}^\text{R}, \text{C}^\text{R})$. Then\footnote{A computational detail for implementing this with real data. In computing the {\tt OUTSIDE} and {\tt REMAINDER} rows, entries less than 0.01 should be rounded to 0. The next step is very important: every number in $\mathbf{F}$ should be divided by the sum of all entries in that column\ (after the just-mentioned rounding) so that the column adds up to exactly $1$. This corresponds to enforcing the constraint that all the dividends belonging to a unit go somewhere. }
+$$ \mathbf{F} = \left[ \begin{array}{ccc|ccc|ccc} 0 & 0.10 & 0.20 & 0&0 &0 & 0 & 0 &0  \\ 0 & 0 & 0.15 & 0&0 &0 & 0 & 0 &0  \\ 0.12 & 0.12 & 0& 0&0 &0 & 0 & 0 &0  \\ \hline  0.11 & 0 & 0 & 1&0 &0 & 0 & 0 &0  \\ 0 & 0.21 & 0 & 0&1 &0 & 0 & 0 &0  \\ 0 & 0 & 0.13& 0&0 &1 & 0 & 0 &0 \\ \hline  0.77 & 0 & 0 & 0&0 &0 & 1 & 0 &0  \\ 0 & 0.57 & 0 & 0&0 &0 & 0 & 1 &0  \\ 0 & 0 & 0.52& 0&0 &0 & 0 & 0 &1\end{array} \right].$$
+
+
+\subsection{ Computation of Ownership Matrix $\mathbf{S}$} \label{sec:compute-S} 
+We present a quick way of computing $\mathbf{S}$ by taking matrix powers. In essence the idea is to look at at $\mathbf{F}^\infty$, which tells us how the Markov or flow process given by $\mathbf{F}$  eventually distributes the dividends that are input. In practice we look at $\mathbf{F}^T$, where $T$ is defined as a number so that $\mathbf{F}^{T+1}$ is within a given tolerance of $\mathbf{F}^T$. 
+
+Then we simply take $\mathbf{S}$ to be a block of $\mathbf{F}^T$. Its rows correspond to outsiders' receiving nodes $X^*$ and the remainder receiving nodes $X^\text{R}$. Its columns are the distributing nodes. In the example given in section \ref{sec:constructing-F}, we would take a high power of $\mathbf{F}$, say $\mathbf{F}^{1000}$, and look at the bottom 6 rows and first 3 columns of $\mathbf{F}^{1000}$; this submatrix is $\mathbf{S}$.
+
+\subsection{Computation of Penultimate Exit Matrix $\mathbf{E}$}  \label{sec:compute-E} Let $$\mathbf{H}=\left[\begin{array}{c}\diag(\mathbf{o}) \mathbf{C} \\ \diag(\mathbf{r}
+) \mathbf{C} \end{array}\right].$$ Let $$\mathbf{K}=\left[\begin{array}{c}\diag(\mathbf{o}) \\ \diag(\mathbf{r}
+) \end{array}\right].$$ Here the notation $\diag(\mathbf{v})$, where $\mathbf{v} \in \R^n$ is a vector, denotes the $n$-by-$n$ diagonal matrix with $v_i$ in the $(i,i)$ entry, and zeros elsewhere. The rows of the above matrices $\mathbf{H}$ and $\mathbf{K}$ are indexed by the receiving nodes:\ the outsiders' receiving nodes first, followed by the remainder receiving nodes.
+
+Now, for any outside or remainder receiving node $i$ (e.g. $i=\text{A}^*$ or $i=\text{A}^\text{R}$) and any distributing node $j$ (e.g. $j=\text{B}$), define $E_{ij}=K_{ij}d_j(0)+\sum_{t=0}^\infty H_{ij}d_j(t)$. This is \emph{the total amount of the dividends ultimately output at $i$ whose penultimate exit was via $j$}.
+
+This output $\mathbf{E}$ is a table of $2n$ rows (one for each outside or remainder receiving node $i$) and $n$ columns (one for each distributing node $j$).
+%\bibliography{shortbib}
+
+\end{document}
