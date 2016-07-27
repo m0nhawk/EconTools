@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
 using OfficeOpenXml;
 
 namespace Helpers
@@ -41,10 +40,10 @@ namespace Helpers
 						.ToList ();
 
 					Matrix<double> shareholdings, outside, remainder, dividends;
-					shareholdings = DenseMatrix.OfColumnMajor (length, length, vals.Take (matrixSize));
-					outside = DenseMatrix.OfDiagonalArray (vals.Skip (matrixSize).Take (vectorSize).ToArray ());
-					remainder = DenseMatrix.OfDiagonalArray (vals.Skip (matrixSize + vectorSize).Take (vectorSize).ToArray ());
-					dividends = DenseMatrix.OfColumnMajor (length, 1, vals.Skip (matrixSize + 2 * vectorSize).Take (vectorSize));
+					shareholdings = Matrix<double>.Build.DenseOfColumnMajor (length, length, vals.Take (matrixSize));
+					outside = Matrix<double>.Build.DenseOfDiagonalArray (vals.Skip (matrixSize).Take (vectorSize).ToArray ());
+					remainder = Matrix<double>.Build.DenseOfDiagonalArray (vals.Skip (matrixSize + vectorSize).Take (vectorSize).ToArray ());
+					dividends = Matrix<double>.Build.DenseOfColumnMajor (length, 1, vals.Skip (matrixSize + 2 * vectorSize).Take (vectorSize));
 
 					return System.Tuple.Create (shareholdings.Transpose (), outside, remainder, dividends);
 				}
@@ -103,7 +102,6 @@ namespace Helpers
 					writeMatrix ("OwnershipTable", wb, ownership, Enumerable.Repeat (companies, 2).SelectMany (x => x), companies);
 					writeMatrix ("DynamicDividendFlow", wb, dividends, Enumerable.Repeat (companies, 3).SelectMany (x => x), Enumerable.Range (1, dividends.ColumnCount).Select (x => x.ToString ()));
 					writeMatrix ("ExitTable", wb, exit, Enumerable.Repeat (companies, 2).SelectMany (x => x), companies);
-
 
 					package.Save ();
 				}

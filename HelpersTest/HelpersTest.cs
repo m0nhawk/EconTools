@@ -1,16 +1,33 @@
 ﻿using NUnit.Framework;
 using System;
-using System.IO;
-using Helpers;
 using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
-using System.Reflection;
+
+using Helpers;
 
 namespace GivenAFile
 {
 	[TestFixture]
 	public class OnLoad
 	{
+		private Matrix<double> shareholdings, outside, remainder, dividends;
+
+		private int length = 3;
+
+		[SetUp]
+		public void Init ()
+		{
+			shareholdings = Matrix<double>.Build.DenseOfArray (new double[,]
+				{ { 0, 0.1, 0.2 },
+				  { 0, 0, 0.15 },
+				  { 0.12, 0.12, 0 } });
+
+			outside = Matrix<double>.Build.DenseOfDiagonalArray (new double[] { 0.11, 0.21, 0.13 });
+
+			remainder = Matrix<double>.Build.DenseOfDiagonalArray (new double[] { 0.77, 0.57, 0.52 });
+
+			dividends = Matrix<double>.Build.DenseOfColumnMajor (length, 1, new double[] { 1000, 0, 0 });
+		}
+
 		[Test]
 		public void Success ()
 		{
@@ -27,19 +44,13 @@ namespace GivenAFile
 			o = vals.Item2;
 			r = vals.Item3;
 			g = vals.Item4;
-			Matrix<double> shareholdings, outside, remainder, dividends;
-			shareholdings = DenseMatrix.OfArray (new double[,] { { 0, 0.1, 0.2 }, { 0, 0, 0.15 }, { 0.12, 0.12, 0 } });
+
 			Assert.AreEqual(c, shareholdings);
 
-			outside = DenseMatrix.Create (length, length, 0.0);
-			outside.SetDiagonal (new double[] { 0.11, 0.21, 0.13 });
 			Assert.AreEqual(o, outside);
 
-			remainder = DenseMatrix.Create (length, length, 0.0);
-			remainder.SetDiagonal (new double[] { 0.77, 0.57, 0.52 });
 			Assert.AreEqual(r, remainder);
 
-			dividends = DenseMatrix.OfColumnMajor (length, 1, new double[] {1000, 0, 0});
 			Assert.AreEqual(g, dividends);
 		}
 

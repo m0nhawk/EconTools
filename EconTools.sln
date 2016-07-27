@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "Helpers\Helpers.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpersTest", "HelpersTest\HelpersTest.csproj", "{5F62678E-9507-4E69-9260-2EC3EDCDE1B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DividendsCalcTest", "DividendsCalcTest\DividendsCalcTest.csproj", "{E1308FAC-E0CD-4534-857B-1FAEE8CBB0FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -33,6 +35,10 @@ Global
 		{A2DE6914-7EF2-4871-B269-FCA2E87EA338}.Debug|x86.Build.0 = Debug|x86
 		{A2DE6914-7EF2-4871-B269-FCA2E87EA338}.Release|x86.ActiveCfg = Release|x86
 		{A2DE6914-7EF2-4871-B269-FCA2E87EA338}.Release|x86.Build.0 = Release|x86
+		{E1308FAC-E0CD-4534-857B-1FAEE8CBB0FE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E1308FAC-E0CD-4534-857B-1FAEE8CBB0FE}.Debug|x86.Build.0 = Debug|Any CPU
+		{E1308FAC-E0CD-4534-857B-1FAEE8CBB0FE}.Release|x86.ActiveCfg = Release|Any CPU
+		{E1308FAC-E0CD-4534-857B-1FAEE8CBB0FE}.Release|x86.Build.0 = Release|Any CPU
 		{FFBC9563-7082-4D48-9182-12EDC1537D23}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{FFBC9563-7082-4D48-9182-12EDC1537D23}.Debug|x86.Build.0 = Debug|Any CPU
 		{FFBC9563-7082-4D48-9182-12EDC1537D23}.Release|x86.ActiveCfg = Release|Any CPU

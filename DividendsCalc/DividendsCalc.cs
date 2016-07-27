@@ -1,6 +1,5 @@
 ﻿using System;
 using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace DividendsCalc
 {
@@ -43,7 +42,7 @@ namespace DividendsCalc
 			return s;
 		}
 
-		public static Matrix<double> penultimateTable (Tuple<Matrix<double>, int> dtable, Matrix<double> c, Matrix<double> o, Matrix<double> r)
+		public static Matrix<double> penultimateExitTable (Tuple<Matrix<double>, int> dtable, Matrix<double> c, Matrix<double> o, Matrix<double> r)
 		{
 			int n = c.ColumnCount;
 
@@ -51,7 +50,7 @@ namespace DividendsCalc
 			var k = o.Append (r).Transpose ();
 			var div = dtable.Item1;
 
-			var e0 = DenseMatrix.Create (2 * n, n, 0.0);
+			var e0 = Matrix<double>.Build.Dense (2 * n, n, 0.0);
 
 			for (int i = 0; i < 2 * n; ++i) {
 				for (int j = 0; j < n; ++j) {
@@ -60,7 +59,7 @@ namespace DividendsCalc
 			}
 
 			var e = e0;
-			var ecurrent = DenseMatrix.Create (2 * n, n, 0.0);
+			var ecurrent = Matrix<double>.Build.Dense (2 * n, n, 0.0);
 
 			for (int t = 0; t < dtable.Item2; ++t) {
 				for (int i = 0; i < 2 * n; ++i) {

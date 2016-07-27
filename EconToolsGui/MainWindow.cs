@@ -1,7 +1,6 @@
 ﻿using System;
 using Gtk;
 using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
 
 using Helpers;
 using DividendsCalc;
@@ -75,9 +74,9 @@ public sealed partial class MainWindow: Gtk.Window
 	{
 		try
 		{
-			Matrix<double> zeroVector = DenseMatrix.Create(1, n, 0.0);
-			Matrix<double> zeroMatrix = DenseMatrix.Create(n, n, 0.0);
-			Matrix<double> id = DenseMatrix.CreateIdentity(n);
+			Matrix<double> zeroVector = Matrix<double>.Build.Dense (1, n, 0.0);
+			Matrix<double> zeroMatrix = Matrix<double>.Build.Dense (n, n, 0.0);
+			Matrix<double> id = Matrix<double>.Build.DenseIdentity (n);
 
 			var d01 = c.Append(zeroMatrix).Append(zeroMatrix);
 			var d02 = o.Append(id).Append(zeroMatrix);
@@ -91,7 +90,7 @@ public sealed partial class MainWindow: Gtk.Window
 
 			var s = DividendsCalc.DividendsCalc.ownershipTable(f);
 
-			var eTable = DividendsCalc.DividendsCalc.penultimateTable(dtable, c, o, r);
+			var eTable = DividendsCalc.DividendsCalc.penultimateExitTable(dtable, c, o, r);
 
 			Helpers.Helpers.writeData(entryInput.Text, s, dtable.Item1, eTable);
 		}
