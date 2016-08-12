@@ -2,8 +2,7 @@
 using Gtk;
 using MathNet.Numerics.LinearAlgebra;
 
-using Helpers;
-using DividendsCalc;
+using DividendFlowCalculator;
 
 public sealed partial class MainWindow: Gtk.Window
 {
@@ -17,91 +16,78 @@ public sealed partial class MainWindow: Gtk.Window
 		Application.Quit ();
 		a.RetVal = true;
 	}
-	static int n;
 
-	Matrix<double> c, o, r, g;
+	private Tuple<Matrix<double>, Matrix<double>, Matrix<double>, Matrix<double>> vals;
 
 	private void buttonOpenClicked (object sender, EventArgs e)
 	{
-		try
-			{
+		try {
 			Gtk.FileChooserDialog dlg =
-				new Gtk.FileChooserDialog("Choose the file to open",
+				new Gtk.FileChooserDialog ("Choose the file to open",
 					this,
 					FileChooserAction.Open,
-					"Cancel",ResponseType.Cancel,
-					"Open",ResponseType.Accept);
-			//dlg.DefaultExt = ".xlsx";
-			//dlg.Filter = "Excel Files (*.xlsx)|*.xlsx";
+					"Cancel", ResponseType.Cancel,
+					"Open", ResponseType.Accept);
+			
+			var excel = new FileFilter ();
+			excel.Name = "Excel Files";
+			excel.AddPattern("*.xlsx");
 
-			if (dlg.Run() == (int)ResponseType.Accept) 
-			{
+			var csv = new FileFilter ();
+			csv.Name = "Comma-Separated Values";
+			csv.AddPattern("*.csv");
+
+			dlg.AddFilter(excel);
+
+			if (dlg.Run () == (int)ResponseType.Accept) {
 				string filename = dlg.Filename;
 				entryInput.Text = filename;
 
-				switch(System.IO.Path.GetExtension(filename))
-				{
+				switch (System.IO.Path.GetExtension (filename)) {
 				case ".xlsx":
-					var vals = Helpers.Helpers.readData(filename);
-
-					c = vals.Item1;
-					n = c.ColumnCount;
-
-					o = vals.Item2;
-					r = vals.Item3;
-					g = vals.Item4;
+					vals = Helpers.Helpers.readData (filename);
 					break;
 				default:
 					break;
 				}
 			}
 
-			dlg.Destroy();
-		}
-		catch(Exception ex) {
-			MessageDialog msg= new MessageDialog(this, 
-				DialogFlags.DestroyWithParent, MessageType.Error, 
-				ButtonsType.Close, ex.Message);
-			msg.Title="Error";
-			ResponseType response = (ResponseType) msg.Run();
+			dlg.Destroy ();
+		} catch (Exception ex) {
+			MessageDialog msg = new MessageDialog (this, 
+				                   DialogFlags.DestroyWithParent, MessageType.Error, 
+				                   ButtonsType.Close, ex.Message);
+			msg.Title = "Error";
+			ResponseType response = (ResponseType)msg.Run ();
 			if (response == ResponseType.Close || response == ResponseType.DeleteEvent) {
-				msg.Destroy();
+				msg.Destroy ();
 			}
 		}
 	}
 
 	private void buttonCalcClicked (object sender, EventArgs e)
 	{
-		try
-		{
-			Matrix<double> zeroVector = Matrix<double>.Build.Dense (1, n, 0.0);
-			Matrix<double> zeroMatrix = Matrix<double>.Build.Dense (n, n, 0.0);
-			Matrix<double> id = Matrix<double>.Build.DenseIdentity (n);
+		try {
+			var val = Helpers.Helpers.ConvertTo (vals);
 
-			var d01 = c.Append(zeroMatrix).Append(zeroMatrix);
-			var d02 = o.Append(id).Append(zeroMatrix);
-			var d03 = r.Append(zeroMatrix).Append(id);
+			var f = val.Item1;
+			var d0 = val.Item2;
 
-			var f = d01.Transpose().Append(d02.Transpose()).Append(d03.Transpose()).Transpose();
+			var dtable = DividendFlowCalculator.DividendFlowCalculator.dynamicDividendTable (d0, f);
 
-			var d0 = g.Transpose().Append(zeroVector).Append(zeroVector).Transpose();
+			var s = DividendFlowCalculator.DividendFlowCalculator.ownershipTable (f);
 
-			var dtable = DividendsCalc.DividendsCalc.dynamicDividendTable(d0, f);
+			var eTable = DividendFlowCalculator.DividendFlowCalculator.penultimateExitTable (dtable, vals.Item1, vals.Item2, vals.Item3);
 
-			var s = DividendsCalc.DividendsCalc.ownershipTable(f);
-
-			var eTable = DividendsCalc.DividendsCalc.penultimateExitTable(dtable, c, o, r);
-
-			Helpers.Helpers.writeData(entryInput.Text, s, dtable.Item1, eTable);
-		}
-		catch(Exception ex) {
-			MessageDialog msg= new MessageDialog(this, 
-				DialogFlags.DestroyWithParent, MessageType.Error, 
-				ButtonsType.Close, ex.Message);
-			msg.Title="Error";
-			ResponseType response = (ResponseType) msg.Run();
+			Helpers.Helpers.writeData (entryInput.Text, s, dtable.Item1, eTable);
+		} catch (Exception ex) {
+			MessageDialog msg = new MessageDialog (this, 
+				                   DialogFlags.DestroyWithParent, MessageType.Error, 
+				                   ButtonsType.Close, ex.Message);
+			msg.Title = "Error";
+			ResponseType response = (ResponseType)msg.Run ();
 			if (response == ResponseType.Close || response == ResponseType.DeleteEvent) {
-				msg.Destroy();
+				msg.Destroy ();
 			}
 		}
 	}

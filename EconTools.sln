@@ -5,13 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EconToolsConsole", "EconToo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EconToolsGui", "EconToolsGui\EconToolsGui.csproj", "{319D2282-A7F5-48A2-8A2B-D8064F429159}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DividendsCalc", "DividendsCalc\DividendsCalc.csproj", "{FFBC9563-7082-4D48-9182-12EDC1537D23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DividendFlowCalculator", "DividendFlowCalculator\DividendFlowCalculator.csproj", "{FFBC9563-7082-4D48-9182-12EDC1537D23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "Helpers\Helpers.csproj", "{9D1492F6-9551-4D45-ACB7-41A58D558A87}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpersTest", "HelpersTest\HelpersTest.csproj", "{5F62678E-9507-4E69-9260-2EC3EDCDE1B7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DividendsCalcTest", "DividendsCalcTest\DividendsCalcTest.csproj", "{E1308FAC-E0CD-4534-857B-1FAEE8CBB0FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DividendFlowCalculatorTest", "DividendFlowCalculatorTest\DividendFlowCalculatorTest.csproj", "{E1308FAC-E0CD-4534-857B-1FAEE8CBB0FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +19,6 @@ Global
 		{319D2282-A7F5-48A2-8A2B-D8064F429159}.Debug|x86.Build.0 = Debug|x86
 		{319D2282-A7F5-48A2-8A2B-D8064F429159}.Release|x86.ActiveCfg = Release|x86
 		{319D2282-A7F5-48A2-8A2B-D8064F429159}.Release|x86.Build.0 = Release|x86
-		{5F62678E-9507-4E69-9260-2EC3EDCDE1B7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5F62678E-9507-4E69-9260-2EC3EDCDE1B7}.Debug|x86.Build.0 = Debug|Any CPU
-		{5F62678E-9507-4E69-9260-2EC3EDCDE1B7}.Release|x86.ActiveCfg = Release|Any CPU
-		{5F62678E-9507-4E69-9260-2EC3EDCDE1B7}.Release|x86.Build.0 = Release|Any CPU
-		{9D1492F6-9551-4D45-ACB7-41A58D558A87}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9D1492F6-9551-4D45-ACB7-41A58D558A87}.Debug|x86.Build.0 = Debug|Any CPU
-		{9D1492F6-9551-4D45-ACB7-41A58D558A87}.Release|x86.ActiveCfg = Release|Any CPU
-		{9D1492F6-9551-4D45-ACB7-41A58D558A87}.Release|x86.Build.0 = Release|Any CPU
 		{A2DE6914-7EF2-4871-B269-FCA2E87EA338}.Debug|x86.ActiveCfg = Debug|x86
 		{A2DE6914-7EF2-4871-B269-FCA2E87EA338}.Debug|x86.Build.0 = Debug|x86
 		{A2DE6914-7EF2-4871-B269-FCA2E87EA338}.Release|x86.ActiveCfg = Release|x86

@@ -43,11 +43,19 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="..\Doc\invalid.xlsx">
+      <Link>invalid.xlsx</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Doc\success.xlsx">
+      <Link>success.xlsx</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DividendsCalc\DividendsCalc.csproj">
+    <ProjectReference Include="..\DividendFlowCalculator\DividendFlowCalculator.csproj">
       <Project>{FFBC9563-7082-4D48-9182-12EDC1537D23}</Project>
-      <Name>DividendsCalc</Name>
+      <Name>DividendFlowCalculator</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

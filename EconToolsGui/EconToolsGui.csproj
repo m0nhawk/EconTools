@@ -67,13 +67,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DividendsCalc\DividendsCalc.csproj">
+    <ProjectReference Include="..\DividendFlowCalculator\DividendFlowCalculator.csproj">
       <Project>{FFBC9563-7082-4D48-9182-12EDC1537D23}</Project>
-      <Name>DividendsCalc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Helpers\Helpers.csproj">
-      <Project>{9D1492F6-9551-4D45-ACB7-41A58D558A87}</Project>
-      <Name>Helpers</Name>
+      <Name>DividendFlowCalculator</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
