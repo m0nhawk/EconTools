@@ -81,7 +81,7 @@ namespace Helpers
 {
 	public static class Helpers
 	{
-		public static Tuple<Matrix<double>, Matrix<double>, Matrix<double>, Matrix<double>> readData (string filename)
+		public static Tuple<Matrix<double>, Matrix<double>, Matrix<double>, Matrix<double>, List<string>> readData (string filename)
 		{
 			var fileinfo = new FileInfo (filename);
 
@@ -110,18 +110,24 @@ namespace Helpers
 						.OfType<double> ()
 						.ToList ();
 
+					var range = ws.Dimension.End.Column;
+					List<string> companies = ws.Cells [2, 1, range, 1]
+						.Select (x => x.Value)
+						.OfType<string> ()
+						.ToList ();
+
 					Matrix<double> shareholdings, outside, remainder, dividends;
 					shareholdings = Matrix<double>.Build.DenseOfColumnMajor (length, length, vals.Take (matrixSize));
 					outside = Matrix<double>.Build.DenseOfDiagonalArray (vals.Skip (matrixSize).Take (vectorSize).ToArray ());
 					remainder = Matrix<double>.Build.DenseOfDiagonalArray (vals.Skip (matrixSize + vectorSize).Take (vectorSize).ToArray ());
 					dividends = Matrix<double>.Build.DenseOfColumnMajor (length, 1, vals.Skip (matrixSize + 2 * vectorSize).Take (vectorSize));
 
-					return System.Tuple.Create (shareholdings.Transpose (), outside, remainder, dividends);
+					return System.Tuple.Create (shareholdings.Transpose (), outside, remainder, dividends, companies);
 				}
 			}
 		}
 
-		public static Tuple<Matrix<double>, Matrix<double>> ConvertTo (Tuple<Matrix<double>, Matrix<double>, Matrix<double>, Matrix<double>> input)
+		public static Tuple<Matrix<double>, Matrix<double>> ConvertTo (Tuple<Matrix<double>, Matrix<double>, Matrix<double>, Matrix<double>, List<string>> input)
 		{
 			int n = input.Item1.ColumnCount;
 			Matrix<double> zeroVector = Matrix<double>.Build.Dense (1, n, 0.0);
@@ -175,29 +181,19 @@ namespace Helpers
 			}
 		}
 
-		public static void writeData (string filename, Matrix<double> ownership, Matrix<double> dividends, Matrix<double> exit)
+		public static bool writeData (string filename, Matrix<double> ownership, Matrix<double> dividends, Matrix<double> exit, List<string> companies)
 		{
 			var fileinfo = new FileInfo (filename);
 
 			using (var package = new ExcelPackage (fileinfo)) {
 				var wb = package.Workbook;
 
-				using (var ws = wb?.Worksheets ["CrossHoldings"]) {
-					if (ws == null)
-						return;
+				writeMatrix ("OwnershipTable", wb, ownership, Enumerable.Repeat (companies, 2).SelectMany (x => x), companies);
+				writeMatrix ("DynamicDividendFlow", wb, dividends, Enumerable.Repeat (companies, 3).SelectMany (x => x), Enumerable.Range (1, dividends.ColumnCount).Select (x => x.ToString ()));
+				writeMatrix ("ExitTable", wb, exit, Enumerable.Repeat (companies, 2).SelectMany (x => x), companies);
 
-					var range = ws.Dimension.End.Column;
-					List<string> companies = ws.Cells [2, 1, range, 1]
-						.Select (x => x.Value)
-						.OfType<string> ()
-						.ToList ();
-
-					writeMatrix ("OwnershipTable", wb, ownership, Enumerable.Repeat (companies, 2).SelectMany (x => x), companies);
-					writeMatrix ("DynamicDividendFlow", wb, dividends, Enumerable.Repeat (companies, 3).SelectMany (x => x), Enumerable.Range (1, dividends.ColumnCount).Select (x => x.ToString ()));
-					writeMatrix ("ExitTable", wb, exit, Enumerable.Repeat (companies, 2).SelectMany (x => x), companies);
-
-					package.Save ();
-				}
+				package.Save ();
+				return true;
 			}
 		}
 	}

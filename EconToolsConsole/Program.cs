@@ -22,11 +22,14 @@ namespace EconToolsConsole
 		{
 			bool help = false;
 
-			string filename = string.Empty;
+			string inputFilename = string.Empty;
+			string outputFilename = string.Empty;
 
 			var option_set = new OptionSet () {
-				{ "o|open=", "filename with input dividend matrix.",
-					v => filename = v },
+				{ "i|input=", "filename with input dividend matrix.",
+					v => inputFilename = v },
+				{ "o|output=", "filename for resulting tables.",
+					v => outputFilename = v},
 				{ "h|help",  "help message.", 
 					v => help = v != null },
 			};
@@ -43,15 +46,15 @@ namespace EconToolsConsole
 
 			if (help) {
 				const string usage_message = 
-					"EconTools.exe [--o|open=<filename>] [--help]";
+					"EconTools.exe [-i|--input=<filename>] [-o|--output=<filename>] [--help]";
 				ShowHelp (usage_message, option_set);
 			}
 
-			if (!String.IsNullOrEmpty(filename)) {
-				if (File.Exists (filename)) {
-					switch (Path.GetExtension (filename)) {
+			if (!String.IsNullOrEmpty(inputFilename)) {
+				if (File.Exists (inputFilename)) {
+					switch (Path.GetExtension (inputFilename)) {
 					case ".xlsx":
-						var vals = Helpers.Helpers.readData (filename);
+						var vals = Helpers.Helpers.readData (inputFilename);
 
 						var val = Helpers.Helpers.ConvertTo (vals);
 
@@ -64,8 +67,14 @@ namespace EconToolsConsole
 
 						var eTable = DividendFlowCalculator.DividendFlowCalculator.penultimateExitTable (dtable, vals.Item1, vals.Item2, vals.Item3);
 
-						Helpers.Helpers.writeData (filename, s, dtable.Item1, eTable);
+						bool res;
+						var companies = vals.Item5;
 
+						if (String.IsNullOrEmpty (outputFilename)) {
+							res = Helpers.Helpers.writeData (inputFilename, s, dtable.Item1, eTable, companies);
+						} else {
+							res = Helpers.Helpers.writeData (outputFilename, s, dtable.Item1, eTable, companies);
+						}
 						break;
 					default:
 						break;
