@@ -4,11 +4,14 @@ using System.IO;
 using System.Linq;
 using MathNet.Numerics.LinearAlgebra;
 using OfficeOpenXml;
+using NLog;
 
 namespace DividendFlowCalculator
 {
 	public static class DividendFlowCalculator
 	{
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
 		const double error_tolerance = 10e-6;
 
 		public static Tuple<Matrix<double>, int> dynamicDividendTable (Matrix<double> d0, Matrix<double> f)
@@ -81,6 +84,8 @@ namespace Helpers
 {
 	public static class Helpers
 	{
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
 		public static Tuple<Matrix<double>, Matrix<double>, Matrix<double>, Matrix<double>, List<string>> readData (string filename)
 		{
 			var fileinfo = new FileInfo (filename);

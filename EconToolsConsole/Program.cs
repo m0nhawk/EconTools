@@ -67,14 +67,10 @@ namespace EconToolsConsole
 
 						var eTable = DividendFlowCalculator.DividendFlowCalculator.penultimateExitTable (dtable, vals.Item1, vals.Item2, vals.Item3);
 
-						bool res;
 						var companies = vals.Item5;
 
-						if (String.IsNullOrEmpty (outputFilename)) {
-							res = Helpers.Helpers.writeData (inputFilename, s, dtable.Item1, eTable, companies);
-						} else {
-							res = Helpers.Helpers.writeData (outputFilename, s, dtable.Item1, eTable, companies);
-						}
+						Helpers.Helpers.writeData (String.IsNullOrEmpty (outputFilename) ? inputFilename : outputFilename, s, dtable.Item1, eTable, companies);
+
 						break;
 					default:
 						break;
