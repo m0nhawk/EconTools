@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Gtk;
 using MathNet.Numerics.LinearAlgebra;
 
@@ -17,7 +18,7 @@ public sealed partial class MainWindow: Gtk.Window
 		a.RetVal = true;
 	}
 
-	private Tuple<Matrix<double>, Matrix<double>, Matrix<double>, Matrix<double>> vals;
+	private DividendData data;
 
 	private void buttonOpenClicked (object sender, EventArgs e)
 	{
@@ -45,7 +46,8 @@ public sealed partial class MainWindow: Gtk.Window
 
 				switch (System.IO.Path.GetExtension (filename)) {
 				case ".xlsx":
-					vals = Helpers.Helpers.readData (filename);
+					data = new DividendFlowCalculator.DividendData ();
+					data.LoadFile (filename);
 					break;
 				default:
 					break;
@@ -68,18 +70,7 @@ public sealed partial class MainWindow: Gtk.Window
 	private void buttonCalcClicked (object sender, EventArgs e)
 	{
 		try {
-			var val = Helpers.Helpers.ConvertTo (vals);
-
-			var f = val.Item1;
-			var d0 = val.Item2;
-
-			var dtable = DividendFlowCalculator.DividendFlowCalculator.dynamicDividendTable (d0, f);
-
-			var s = DividendFlowCalculator.DividendFlowCalculator.ownershipTable (f);
-
-			var eTable = DividendFlowCalculator.DividendFlowCalculator.penultimateExitTable (dtable, vals.Item1, vals.Item2, vals.Item3);
-
-			Helpers.Helpers.writeData (entryInput.Text, s, dtable.Item1, eTable);
+			data.writeData (entryInput.Text);
 		} catch (Exception ex) {
 			MessageDialog msg = new MessageDialog (this, 
 				                   DialogFlags.DestroyWithParent, MessageType.Error, 

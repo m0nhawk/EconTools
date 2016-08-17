@@ -54,23 +54,9 @@ namespace EconToolsConsole
 				if (File.Exists (inputFilename)) {
 					switch (Path.GetExtension (inputFilename)) {
 					case ".xlsx":
-						var vals = Helpers.Helpers.readData (inputFilename);
-
-						var val = Helpers.Helpers.ConvertTo (vals);
-
-						var f = val.Item1;
-						var d0 = val.Item2;
-
-						var dtable = DividendFlowCalculator.DividendFlowCalculator.dynamicDividendTable (d0, f);
-
-						var s = DividendFlowCalculator.DividendFlowCalculator.ownershipTable (f);
-
-						var eTable = DividendFlowCalculator.DividendFlowCalculator.penultimateExitTable (dtable, vals.Item1, vals.Item2, vals.Item3);
-
-						var companies = vals.Item5;
-
-						Helpers.Helpers.writeData (String.IsNullOrEmpty (outputFilename) ? inputFilename : outputFilename, s, dtable.Item1, eTable, companies);
-
+						var data = new DividendFlowCalculator.DividendData ();
+						data.LoadFile (inputFilename);
+						data.writeData (String.IsNullOrEmpty (outputFilename) ? inputFilename : outputFilename);
 						break;
 					default:
 						break;
