@@ -33,14 +33,14 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Numerics" />
-    <Reference Include="MathNet.Numerics">
-      <HintPath>..\packages\MathNet.Numerics.3.12.0\lib\net40\MathNet.Numerics.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Options">
       <HintPath>..\packages\Mono.Options.4.4.0.0\lib\net4-client\Mono.Options.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.4.3.7\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics">
+      <HintPath>..\packages\MathNet.Numerics.3.13.0\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

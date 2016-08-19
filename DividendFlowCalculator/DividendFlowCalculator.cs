@@ -11,7 +11,7 @@ namespace DividendFlowCalculator
 	public class DividendData
 	{
 		public Matrix<double> shareholdings { get; set; }
-		public Matrix<double> outside  { get; set; }
+		public Matrix<double> outside { get; set; }
 		public Matrix<double> remainder { get; set; }
 		public Matrix<double> dividends { get; set; }
 		public List<string> companies { get; set; }
@@ -87,25 +87,22 @@ namespace DividendFlowCalculator
 			}
 		}
 
-		public Tuple<Matrix<double>, int> dynamicDividend ()
+		public Tuple<List<string>, List<string>, Matrix<double>> dynamicDividend ()
 		{
 			Matrix<double> current_dividends = this.initialDividends;
 			Matrix<double> later_dividends = this.flowMatrix * this.initialDividends;
 			Matrix<double> div = current_dividends.Append (later_dividends);
 
-			var T = 2;
-
 			while ((current_dividends - later_dividends).L2Norm () > error_tolerance) {
 				current_dividends = later_dividends;
 				later_dividends = this.flowMatrix.Multiply (current_dividends);
 				div = div.Append (later_dividends);
-				++T;
 			}
 
-			return System.Tuple.Create (div, T);
+			return System.Tuple.Create (Enumerable.Repeat (companies, 3).SelectMany (x => x).ToList(), Enumerable.Range(1, div.ColumnCount).Select(n => n.ToString()).ToList(), div);
 		}
 
-		public Matrix<double> ownership ()
+		public Tuple<List<string>, List<string>, Matrix<double>> ownership ()
 		{
 			int n = this.flowMatrix.ColumnCount / 3;
 
@@ -119,16 +116,16 @@ namespace DividendFlowCalculator
 
 			Matrix<double> s = nextF.SubMatrix (n, 3 * n - n, 0, n);
 
-			return s;
+			return System.Tuple.Create (Enumerable.Repeat (companies, 2).SelectMany (x => x).ToList(), companies, s);
 		}
 
-		public Matrix<double> penultimateExit ()
+		public Tuple<List<string>, List<string>, Matrix<double>> penultimateExit ()
 		{
 			int n = shareholdings.ColumnCount;
 			var h = outside.Multiply (shareholdings).Transpose ().Append (remainder.Multiply (shareholdings).Transpose ()).Transpose ();
 			var k = outside.Append (remainder).Transpose ();
 			var dtable = this.dynamicDividend ();
-			var div = dtable.Item1;
+			var div = dtable.Item3;
 
 			var e0 = Matrix<double>.Build.Dense (2 * n, n, 0.0);
 
@@ -141,7 +138,7 @@ namespace DividendFlowCalculator
 			var e = e0;
 			var ecurrent = Matrix<double>.Build.Dense (2 * n, n, 0.0);
 
-			for (int t = 0; t < dtable.Item2; ++t) {
+			for (int t = 0; t < div.ColumnCount; ++t) {
 				for (int i = 0; i < 2 * n; ++i) {
 					for (int j = 0; j < n; ++j) {
 						ecurrent [i, j] = h [i, j] * div [j, t];
@@ -149,16 +146,16 @@ namespace DividendFlowCalculator
 				}
 				e += ecurrent;
 			}
-			return e;
+			return System.Tuple.Create (Enumerable.Repeat (companies, 2).SelectMany (x => x).ToList(), companies, e);
 		}
 
-		private void writeMatrix (string sheetname, ExcelWorkbook wb, Matrix<double> src, IEnumerable<string> rows = null, IEnumerable<string> cols = null)
+		private bool writeMatrix (ExcelWorkbook wb, string sheetname, Tuple<List<string>, List<string>, Matrix<double>> src)
 		{
 			var ws = wb.Worksheets [sheetname] ?? wb.Worksheets.Add (sheetname);
 			var rowIndex = -1;
 			var colIndex = -1;
 
-			foreach (var row in src.EnumerateRowsIndexed()) {
+			foreach (var row in src.Item3.EnumerateRowsIndexed()) {
 				rowIndex = row.Item1 + 2;
 				foreach (var val in row.Item2.EnumerateIndexed()) {
 					colIndex = val.Item1 + 2;
@@ -169,12 +166,8 @@ namespace DividendFlowCalculator
 				}
 			}
 
-			if (cols != null) {
-				colIndex = 2;
-				foreach (var col in cols) {
-					ws.Cells [1, colIndex++].Value = col;
-				}
-			}
+			var rows = src.Item1;
+			var cols = src.Item2;
 
 			if (rows != null) {
 				rowIndex = 2;
@@ -182,6 +175,14 @@ namespace DividendFlowCalculator
 					ws.Cells [rowIndex++, 1].Value = row;
 				}
 			}
+
+			if (cols != null) {
+				colIndex = 2;
+				foreach (var col in cols) {
+					ws.Cells [1, colIndex++].Value = col;
+				}
+			}
+			return true;
 		}
 
 		public bool writeData (string filename)
@@ -191,12 +192,13 @@ namespace DividendFlowCalculator
 			using (var package = new ExcelPackage (fileinfo)) {
 				var wb = package.Workbook;
 
-				writeMatrix ("OwnershipTable", wb, ownership (), Enumerable.Repeat (companies, 2).SelectMany (x => x), companies);
-				writeMatrix ("DynamicDividendFlow", wb, dynamicDividend ().Item1, Enumerable.Repeat (companies, 3).SelectMany (x => x), Enumerable.Range (1, dividends.ColumnCount).Select (x => x.ToString ()));
-				writeMatrix ("ExitTable", wb, penultimateExit (), Enumerable.Repeat (companies, 2).SelectMany (x => x), companies);
+				bool hasAnyInvalid = false;
+				hasAnyInvalid |= !writeMatrix (wb, "Ownership", ownership ());
+				hasAnyInvalid |= !writeMatrix (wb, "DynamicDividendFlow", dynamicDividend ());
+				hasAnyInvalid |= !writeMatrix (wb, "PenultimateExit", penultimateExit ());
 
 				package.Save ();
-				return true;
+				return hasAnyInvalid;
 			}
 		}
 	}
