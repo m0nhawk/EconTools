@@ -47,7 +47,7 @@ public sealed partial class MainWindow: Gtk.Window
 				switch (System.IO.Path.GetExtension (filename)) {
 				case ".xlsx":
 					data = new DividendFlowCalculator.DividendData ();
-					data.LoadFile (filename);
+					data.LoadFromFile (filename);
 					break;
 				default:
 					break;

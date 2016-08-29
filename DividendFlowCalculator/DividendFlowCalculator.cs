@@ -14,8 +14,7 @@ namespace DividendFlowCalculator
 		public Matrix<double> outside { get; set; }
 		public Matrix<double> remainder { get; set; }
 		public Matrix<double> dividends { get; set; }
-		public List<string> companies { get; set; }
-
+		public List<string> companies { get; set; } = new List<string> ();
 		public Matrix<double> initialDividends {
 			get {
 				int n = shareholdings.ColumnCount;
@@ -25,7 +24,6 @@ namespace DividendFlowCalculator
 				return d0;
 			}
 		}
-
 		public Matrix<double> flowMatrix {
 			get {
 				int n = shareholdings.ColumnCount;
@@ -39,10 +37,9 @@ namespace DividendFlowCalculator
 				return f;
 			}
 		}
-
 		private const double error_tolerance = 10e-6;
 
-		public bool LoadFile (string filename)
+		public bool LoadFromFile (string filename)
 		{
 			var fileinfo = new FileInfo (filename);
 

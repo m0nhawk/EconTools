@@ -55,7 +55,7 @@ namespace EconToolsConsole
 					switch (Path.GetExtension (inputFilename)) {
 					case ".xlsx":
 						var data = new DividendFlowCalculator.DividendData ();
-						data.LoadFile (inputFilename);
+						data.LoadFromFile (inputFilename);
 						data.writeData (String.IsNullOrEmpty (outputFilename) ? inputFilename : outputFilename);
 						break;
 					default:

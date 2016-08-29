@@ -138,7 +138,7 @@ namespace GivenAFile
 		public void Success ()
 		{
 			var data = new DividendFlowCalculator.DividendData ();
-			data.LoadFile ("success.xlsx");
+			data.LoadFromFile ("success.xlsx");
 
 			Matrix<double> readShareholdings, readOutside, readRemainder, readDividends;
 
@@ -157,14 +157,14 @@ namespace GivenAFile
 		public void MissingFile ()
 		{
 			var data = new DividendFlowCalculator.DividendData ();
-			Assert.Throws<System.IO.FileNotFoundException> (() => data.LoadFile ("missing.xlsx"));
+			Assert.Throws<System.IO.FileNotFoundException> (() => data.LoadFromFile ("missing.xlsx"));
 		}
 
 		[Test]
 		public void InvalidData ()
 		{
 			var data = new DividendFlowCalculator.DividendData ();
-			var notOk = data.LoadFile ("invalid.xlsx");
+			var notOk = data.LoadFromFile ("invalid.xlsx");
 			Assert.IsFalse (notOk);
 		}
 	}
