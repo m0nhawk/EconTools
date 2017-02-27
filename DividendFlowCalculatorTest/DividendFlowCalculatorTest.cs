@@ -26,7 +26,7 @@ namespace GivenAData
 		}
 	}
 
-	[TestFixture]
+	[TestFixture ()]
 	public class OnCalculation
 	{
 		private Matrix<double> shareholdings, outside, remainder, dividends;
@@ -37,7 +37,7 @@ namespace GivenAData
 
 		private int length = 3;
 
-		[SetUp]
+		[SetUp ()]
 		public void Init ()
 		{
 			shareholdings = Matrix<double>.Build.DenseOfArray (new double[,] {
@@ -90,21 +90,21 @@ namespace GivenAData
 			data.companies = new List<string> ();
 		}
 
-		[Test]
+		[Test ()]
 		public void CorrectDynamicDidivend ()
 		{
 			var dynamicDividendResult = data.dynamicDividend ().Item3;
 			Assert.That (dynamicDividendResult, Is.EqualTo (dynamicDividend).Using (new MatrixWithinComparer ()));
 		}
 
-		[Test]
+		[Test ()]
 		public void CorrectOwnershipTable ()
 		{
 			var ownershipResult = data.ownership ().Item3;
 			Assert.That (ownershipResult, Is.EqualTo (ownership).Using (new MatrixWithinComparer ()));
 		}
 
-		[Test]
+		[Test ()]
 		public void CorrectPenultimateExit ()
 		{
 			var penultimateExitResult = data.penultimateExit ().Item3;
@@ -115,12 +115,12 @@ namespace GivenAData
 
 namespace GivenAFile
 {
-	[TestFixture]
+	[TestFixture ()]
 	public class OnLoad
 	{
 		private Matrix<double> shareholdingsOk, outsideOk, remainderOk, dividendsOk;
 
-		[SetUp]
+		[SetUp ()]
 		public void Init ()
 		{
 			int length = 3;
@@ -134,7 +134,7 @@ namespace GivenAFile
 			dividendsOk = Matrix<double>.Build.DenseOfColumnMajor (length, 1, new double[] { 1000, 0, 0 });
 		}
 
-		[Test]
+		[Test ()]
 		public void Success ()
 		{
 			var data = new DividendFlowCalculator.DividendData ();
@@ -153,14 +153,14 @@ namespace GivenAFile
 			Assert.AreEqual (readDividends, dividendsOk);
 		}
 
-		[Test]
+		[Test ()]
 		public void MissingFile ()
 		{
 			var data = new DividendFlowCalculator.DividendData ();
 			Assert.Throws<System.IO.FileNotFoundException> (() => data.LoadFromFile ("missing.xlsx"));
 		}
 
-		[Test]
+		[Test ()]
 		public void InvalidData ()
 		{
 			var data = new DividendFlowCalculator.DividendData ();
