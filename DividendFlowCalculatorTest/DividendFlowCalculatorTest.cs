@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MathNet.Numerics.LinearAlgebra;
 
 using DividendFlowCalculator;
+using System.IO;
 
 namespace GivenAData
 {
@@ -138,7 +139,10 @@ namespace GivenAFile
 		public void Success ()
 		{
 			var data = new DividendFlowCalculator.DividendData ();
-			data.LoadFromFile ("success.xlsx");
+
+            Console.WriteLine(Directory.GetCurrentDirectory());
+
+			data.LoadFromFile (Path.Combine(TestContext.CurrentContext.TestDirectory, "success.xlsx"));
 
 			Matrix<double> readShareholdings, readOutside, readRemainder, readDividends;
 
@@ -157,14 +161,14 @@ namespace GivenAFile
 		public void MissingFile ()
 		{
 			var data = new DividendFlowCalculator.DividendData ();
-			Assert.Throws<System.IO.FileNotFoundException> (() => data.LoadFromFile ("missing.xlsx"));
+			Assert.Throws<System.IO.FileNotFoundException> (() => data.LoadFromFile (Path.Combine(TestContext.CurrentContext.TestDirectory, "missing.xlsx")));
 		}
 
 		[Test ()]
 		public void InvalidData ()
 		{
 			var data = new DividendFlowCalculator.DividendData ();
-			var notOk = data.LoadFromFile ("invalid.xlsx");
+			var notOk = data.LoadFromFile (Path.Combine(TestContext.CurrentContext.TestDirectory, "invalid.xlsx"));
 			Assert.IsFalse (notOk);
 		}
 	}

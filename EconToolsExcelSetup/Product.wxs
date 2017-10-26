@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+	<Product Id="*" Name="EconToolsAddIn" Language="1033" Version="1.0.0.0" Manufacturer="Andrew Prokhorenkov" UpgradeCode="59980c63-fa3b-45e3-a816-980f0e6a6efd">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Property Id="VSTORUNTIMEREDIST">
+      <RegistrySearch
+        Id="VSTORuntimeRedist"
+        Root="HKLM"
+        Key="SOFTWARE\Microsoft\VSTO Runtime Setup\v4R"
+        Name="Version"
+        Type="raw" />
+    </Property>
+    <Condition
+        Message="The Visual Studio 2010 Tools for Office Runtime is not installed. Please download and install from http://www.microsoft.com/en-us/download/details.aspx?id=20479.">
+      <![CDATA[Installed OR VSTORUNTIMEREDIST>="10.0.30319"]]>
+    </Condition>
+
+    <PropertyRef Id="NETFRAMEWORK40FULL"/>
+    <PropertyRef Id="NETFRAMEWORK40CLIENT"/>
+    <Condition
+        Message="This setup requires the .NET Framework 4.0.  Please install the .NET Framework and run this setup again.">
+      <![CDATA[Installed OR NETFRAMEWORK40FULL OR NETFRAMEWORK40CLIENT]]>
+    </Condition> 
+
+    <Feature Id="ProductFeature" Title="EconToolsExcelSetup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="Registry_FriendlyName" />
+      <ComponentRef Id="Registry_Description" />
+      <ComponentRef Id="Registry_Manifest" />
+      <ComponentRef Id="Registry_LoadBehavior" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="EconToolsExcelSetup" />
+        <Component Id="Registry_FriendlyName">
+          <RegistryValue Id="RegKey_FriendlyName" Root="HKCU"
+                         Key="Software\Microsoft\Office\Excel\AddIns\EconToolsAddIn"
+                         Name="FriendlyName"
+                         Value="Econ Tools Excel Add-In"
+                         Type="string" KeyPath="yes" />
+        </Component>
+        <Component Id="Registry_Description">
+          <RegistryValue Id="RegKey_Description" Root="HKCU"
+                         Key="Software\Microsoft\Office\Excel\AddIns\EconToolsAddIn"
+                         Name="Description"
+                         Value="Econ Tools Excel Add-In"
+                         Type="string" KeyPath="yes" />
+        </Component>
+        <Component Id="Registry_Manifest">
+          <RegistryValue Id="RegKey_Manifest" Root="HKCU"
+                         Key="Software\Microsoft\Office\Excel\AddIns\EconToolsAddIn"
+                         Name="Manifest" Value="[INSTALLFOLDER]EconToolsExcel.vsto|vstolocal"
+                         Type="string" KeyPath="yes" />
+        </Component>
+        <Component Id="Registry_LoadBehavior">
+          <RegistryValue Id="RegKey_LoadBehavior" Root="HKCU"
+                         Key="Software\Microsoft\Office\Excel\AddIns\EconToolsAddIn"
+                         Name="LoadBehavior" Value="3"
+                         Type="integer" KeyPath="yes" />
+        </Component>
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="EconToolsExcel_dll_Component">
+        <File Id="EconToolsExcel_dll" KeyPath="yes"
+              Name="EconToolsExcel.dll" Source="$(var.AddinFiles)"></File>
+      </Component>
+      <Component Id="EconToolsExcel_vsto_Component">
+        <File Id="EconToolsExcel_vsto" KeyPath="yes"
+              Name="EconToolsExcel.vsto" Source="$(var.AddinFiles)"></File>
+      </Component>
+      <Component Id="EconToolsExcel_dll_manifest_Component">
+        <File Id="EconToolsExcel_dll_manifest" KeyPath="yes"
+              Name="EconToolsExcel.dll.manifest" Source="$(var.AddinFiles)"></File>
+      </Component>
+      <Component Id="MSOfficeToolsCommon_dll_Component">
+        <File Id="MSOfficeToolsCommon_dll" KeyPath="yes"
+              Name="Microsoft.Office.Tools.Common.v4.0.Utilities.dll"
+              Source="$(var.AddinFiles)"></File>
+      </Component>
+      <Component Id="MathNet_Numerics_dll_Component">
+        <File Id="MathNet_Numerics_dll" KeyPath="yes"
+              Name="MathNet.Numerics.dll"
+              Source="$(var.AddinFiles)"></File>
+      </Component>
+      <Component Id="MathNet_Numerics_xml_Component">
+        <File Id="MathNet_Numerics_xml" KeyPath="yes"
+              Name="MathNet.Numerics.xml"
+              Source="$(var.AddinFiles)"></File>
+      </Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
