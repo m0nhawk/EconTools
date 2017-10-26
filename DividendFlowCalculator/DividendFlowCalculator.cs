@@ -125,107 +125,105 @@ namespace DividendFlowCalculator
                 return e;
             }
         }
-    }
-	public class DividendData_
-	{
-		public bool LoadFromFile (string filename)
-		{
-			var fileinfo = new FileInfo (filename);
 
-			if (!fileinfo.Exists) {
-				throw new FileNotFoundException ();
-			}
+        public bool LoadFromFile(string filename)
+        {
+            var fileinfo = new FileInfo(filename);
 
-			using (var package = new ExcelPackage (fileinfo)) {
-				var wb = package.Workbook;
+            if (!fileinfo.Exists)
+            {
+                throw new FileNotFoundException();
+            }
 
-                //using (var ws = wb?.Worksheets ["CrossHoldings"]) {
-                //	if (ws == null)
-                //		return false;
+            using (var package = new ExcelPackage(fileinfo))
+            {
+                var wb = package.Workbook;
 
-                //	int length = ws.Dimension.End.Column - 1,
-                //	matrixSize = length * length,
-                //	vectorSize = length,
-                //	startRow = ws.Dimension.Start.Row + 1,
-                //	startColumn = ws.Dimension.Start.Column + 1,
-                //	endRow = ws.Dimension.End.Row,
-                //	endColumn = ws.Dimension.End.Column;
+                using (var ws = wb?.Worksheets["CrossHoldings"])
+                {
+                    if (ws == null)
+                        return false;
 
-                //	List<double> vals = ws.Cells [startRow, startColumn, endRow, endColumn]
-                //		.Where (x => x != null)
-                //		.Select (x => x.Value)
-                //		.OfType<double> ()
-                //		.ToList ();
+                    int length = ws.Dimension.End.Column - 1,
+                    matrixSize = length * length,
+                    vectorSize = length,
+                    startRow = ws.Dimension.Start.Row + 1,
+                    startColumn = ws.Dimension.Start.Column + 1,
+                    endRow = ws.Dimension.End.Row,
+                    endColumn = ws.Dimension.End.Column;
 
-                //	var range = ws.Dimension.End.Column;
-                //	companies = ws.Cells [2, 1, range, 1]
-                //		.Select (x => x.Value)
-                //		.OfType<string> ()
-                //		.ToList ();
+                    List<double> vals = ws.Cells[startRow, startColumn, endRow, endColumn]
+                        .Where(x => x != null)
+                        .Select(x => x.Value)
+                        .OfType<double>()
+                        .ToList();
 
-                //	shareholdings = Matrix<double>.Build.DenseOfColumnMajor (length, length, vals.Take (matrixSize)).Transpose ();
-                //	outside = Matrix<double>.Build.DenseOfDiagonalArray (vals.Skip (matrixSize).Take (vectorSize).ToArray ());
-                //	remainder = Matrix<double>.Build.DenseOfDiagonalArray (vals.Skip (matrixSize + vectorSize).Take (vectorSize).ToArray ());
-                //	dividends = Matrix<double>.Build.DenseOfColumnMajor (length, 1, vals.Skip (matrixSize + 2 * vectorSize).Take (vectorSize));
+                    var range = ws.Dimension.End.Column;
+                    companies = ws.Cells[2, 1, range, 1]
+                        .Select(x => x.Value)
+                        .OfType<string>()
+                        .ToList();
 
-                //	return true;
-                //}
-                return true;
-			}
-		}		
+                    shareholdings = Matrix<double>.Build.DenseOfColumnMajor(length, length, vals.Take(matrixSize)).Transpose();
+                    outside = Matrix<double>.Build.DenseOfDiagonalArray(vals.Skip(matrixSize).Take(vectorSize).ToArray());
+                    remainder = Matrix<double>.Build.DenseOfDiagonalArray(vals.Skip(matrixSize + vectorSize).Take(vectorSize).ToArray());
+                    dividends = Matrix<double>.Build.DenseOfColumnMajor(length, 1, vals.Skip(matrixSize + 2 * vectorSize).Take(vectorSize));
 
-		private bool writeMatrix (ExcelWorkbook wb, string sheetname, Tuple<List<string>, List<string>, Matrix<double>> src)
-		{
-			var ws = wb.Worksheets [sheetname] ?? wb.Worksheets.Add (sheetname);
-			var rowIndex = -1;
-			var colIndex = -1;
+                    return true;
+                }
+            }
+        }
 
-			foreach (var row in src.Item3.EnumerateRowsIndexed()) {
-				rowIndex = row.Item1 + 2;
-				foreach (var val in row.Item2.EnumerateIndexed()) {
-					colIndex = val.Item1 + 2;
-					double num = val.Item2;
-					num = num > 10e-8 ? num : 0.0;
+        private bool writeMatrix(ExcelWorkbook wb, string sheetname, Matrix<double> data, List<string> rowNames, List<string> colNames)
+        {
+            var ws = wb.Worksheets[sheetname] ?? wb.Worksheets.Add(sheetname);
 
-					ws.Cells [rowIndex, colIndex].Value = num;
-				}
-			}
+            foreach (var item in data.EnumerateIndexed())
+            {
+                var row = item.Item1 + 2;
+                var col = item.Item2 + 2;
+                var num = item.Item3;
 
-			var rows = src.Item1;
-			var cols = src.Item2;
+                num = num > 10e-8 ? num : 0.0;
+                ws.Cells[row, col].Value = num;
+            }
 
-			if (rows != null) {
-				rowIndex = 2;
-				foreach (var row in rows) {
-					ws.Cells [rowIndex++, 1].Value = row;
-				}
-			}
+            if (rowNames != null)
+            {
+                int rowIndex = 2;
+                foreach (var row in rowNames)
+                {
+                    ws.Cells[rowIndex++, 1].Value = row;
+                }
+            }
 
-			if (cols != null) {
-				colIndex = 2;
-				foreach (var col in cols) {
-					ws.Cells [1, colIndex++].Value = col;
-				}
-			}
-			return true;
-		}
-
-		public bool writeData (string filename)
-		{
-            //var fileinfo = new FileInfo (filename);
-
-            //using (var package = new ExcelPackage (fileinfo)) {
-            //	var wb = package.Workbook;
-
-            //	bool hasAnyInvalid = false;
-            //	hasAnyInvalid |= !writeMatrix (wb, "Ownership", ownership ());
-            //	hasAnyInvalid |= !writeMatrix (wb, "DynamicDividendFlow", dynamicDividend ());
-            //	hasAnyInvalid |= !writeMatrix (wb, "PenultimateExit", penultimateExit ());
-
-            //	package.Save ();
-            //	return hasAnyInvalid;
-            //}
+            if (colNames != null)
+            {
+                int colIndex = 2;
+                foreach (var col in colNames)
+                {
+                    ws.Cells[1, colIndex++].Value = col;
+                }
+            }
             return true;
-		}
-	}
+        }
+
+        public bool writeData(string filename)
+        {
+            var fileinfo = new FileInfo(filename);
+
+            using (var package = new ExcelPackage(fileinfo))
+            {
+                var wb = package.Workbook;
+
+                bool hasAnyInvalid = false;
+                hasAnyInvalid |= !writeMatrix(wb, "Ownership", ownership, Enumerable.Repeat(companies, 2).SelectMany(x => x).ToList(), companies);
+                hasAnyInvalid |= !writeMatrix(wb, "DynamicDividendFlow", dynamicDividend, Enumerable.Repeat(companies, 3).SelectMany(x => x).ToList(), Enumerable.Range(1, dynamicDividend.ColumnCount).Select(n => n.ToString()).ToList());
+                hasAnyInvalid |= !writeMatrix(wb, "PenultimateExit", penultimateExit, Enumerable.Repeat(companies, 2).SelectMany(x => x).ToList(), companies);
+
+                package.Save();
+                return hasAnyInvalid;
+            }
+        }
+    }
 }
