@@ -94,21 +94,21 @@ namespace GivenAData
 		[Test ()]
 		public void CorrectDynamicDidivend ()
 		{
-			var dynamicDividendResult = data.dynamicDividend ().Item3;
+			var dynamicDividendResult = data.dynamicDividend;
 			Assert.That (dynamicDividendResult, Is.EqualTo (dynamicDividend).Using (new MatrixWithinComparer ()));
 		}
 
 		[Test ()]
 		public void CorrectOwnershipTable ()
 		{
-			var ownershipResult = data.ownership ().Item3;
+			var ownershipResult = data.ownership;
 			Assert.That (ownershipResult, Is.EqualTo (ownership).Using (new MatrixWithinComparer ()));
 		}
 
 		[Test ()]
 		public void CorrectPenultimateExit ()
 		{
-			var penultimateExitResult = data.penultimateExit ().Item3;
+			var penultimateExitResult = data.penultimateExit;
 			Assert.That (penultimateExitResult, Is.EqualTo (penultimateExit).Using (new MatrixWithinComparer ()));
 		}
 	}
@@ -135,41 +135,41 @@ namespace GivenAFile
 			dividendsOk = Matrix<double>.Build.DenseOfColumnMajor (length, 1, new double[] { 1000, 0, 0 });
 		}
 
-		[Test ()]
-		public void Success ()
-		{
-			var data = new DividendFlowCalculator.DividendData ();
+		//[Test ()]
+		//public void Success ()
+		//{
+		//	var data = new DividendFlowCalculator.DividendData ();
 
-            Console.WriteLine(Directory.GetCurrentDirectory());
+  //          Console.WriteLine(Directory.GetCurrentDirectory());
 
-			data.LoadFromFile (Path.Combine(TestContext.CurrentContext.TestDirectory, "success.xlsx"));
+		//	data.LoadFromFile (Path.Combine(TestContext.CurrentContext.TestDirectory, "success.xlsx"));
 
-			Matrix<double> readShareholdings, readOutside, readRemainder, readDividends;
+		//	Matrix<double> readShareholdings, readOutside, readRemainder, readDividends;
 
-			readShareholdings = data.shareholdings;
-			readOutside = data.outside;
-			readRemainder = data.remainder;
-			readDividends = data.dividends;
+		//	readShareholdings = data.shareholdings;
+		//	readOutside = data.outside;
+		//	readRemainder = data.remainder;
+		//	readDividends = data.dividends;
 
-			Assert.AreEqual (readShareholdings, shareholdingsOk);
-			Assert.AreEqual (readOutside, outsideOk);
-			Assert.AreEqual (readRemainder, remainderOk);
-			Assert.AreEqual (readDividends, dividendsOk);
-		}
+		//	Assert.AreEqual (readShareholdings, shareholdingsOk);
+		//	Assert.AreEqual (readOutside, outsideOk);
+		//	Assert.AreEqual (readRemainder, remainderOk);
+		//	Assert.AreEqual (readDividends, dividendsOk);
+		//}
 
-		[Test ()]
-		public void MissingFile ()
-		{
-			var data = new DividendFlowCalculator.DividendData ();
-			Assert.Throws<System.IO.FileNotFoundException> (() => data.LoadFromFile (Path.Combine(TestContext.CurrentContext.TestDirectory, "missing.xlsx")));
-		}
+		//[Test ()]
+		//public void MissingFile ()
+		//{
+		//	var data = new DividendFlowCalculator.DividendData ();
+		//	Assert.Throws<System.IO.FileNotFoundException> (() => data.LoadFromFile (Path.Combine(TestContext.CurrentContext.TestDirectory, "missing.xlsx")));
+		//}
 
-		[Test ()]
-		public void InvalidData ()
-		{
-			var data = new DividendFlowCalculator.DividendData ();
-			var notOk = data.LoadFromFile (Path.Combine(TestContext.CurrentContext.TestDirectory, "invalid.xlsx"));
-			Assert.IsFalse (notOk);
-		}
+		//[Test ()]
+		//public void InvalidData ()
+		//{
+		//	var data = new DividendFlowCalculator.DividendData ();
+		//	var notOk = data.LoadFromFile (Path.Combine(TestContext.CurrentContext.TestDirectory, "invalid.xlsx"));
+		//	Assert.IsFalse (notOk);
+		//}
 	}
 }
