@@ -135,41 +135,39 @@ namespace GivenAFile
 			dividendsOk = Matrix<double>.Build.DenseOfColumnMajor (length, 1, new double[] { 1000, 0, 0 });
 		}
 
-		//[Test ()]
-		//public void Success ()
-		//{
-		//	var data = new DividendFlowCalculator.DividendData ();
+        [Test()]
+        public void Success()
+        {
+            var data = new DividendFlowCalculator.DividendData();
 
-  //          Console.WriteLine(Directory.GetCurrentDirectory());
+            data.LoadFromFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "success.xlsx"));
 
-		//	data.LoadFromFile (Path.Combine(TestContext.CurrentContext.TestDirectory, "success.xlsx"));
+            Matrix<double> readShareholdings, readOutside, readRemainder, readDividends;
 
-		//	Matrix<double> readShareholdings, readOutside, readRemainder, readDividends;
+            readShareholdings = data.shareholdings;
+            readOutside = data.outside;
+            readRemainder = data.remainder;
+            readDividends = data.dividends;
 
-		//	readShareholdings = data.shareholdings;
-		//	readOutside = data.outside;
-		//	readRemainder = data.remainder;
-		//	readDividends = data.dividends;
+            Assert.AreEqual(readShareholdings, shareholdingsOk);
+            Assert.AreEqual(readOutside, outsideOk);
+            Assert.AreEqual(readRemainder, remainderOk);
+            Assert.AreEqual(readDividends, dividendsOk);
+        }
 
-		//	Assert.AreEqual (readShareholdings, shareholdingsOk);
-		//	Assert.AreEqual (readOutside, outsideOk);
-		//	Assert.AreEqual (readRemainder, remainderOk);
-		//	Assert.AreEqual (readDividends, dividendsOk);
-		//}
+        [Test()]
+        public void MissingFile()
+        {
+            var data = new DividendFlowCalculator.DividendData();
+            Assert.Throws<System.IO.FileNotFoundException>(() => data.LoadFromFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "missing.xlsx")));
+        }
 
-		//[Test ()]
-		//public void MissingFile ()
-		//{
-		//	var data = new DividendFlowCalculator.DividendData ();
-		//	Assert.Throws<System.IO.FileNotFoundException> (() => data.LoadFromFile (Path.Combine(TestContext.CurrentContext.TestDirectory, "missing.xlsx")));
-		//}
-
-		//[Test ()]
-		//public void InvalidData ()
-		//{
-		//	var data = new DividendFlowCalculator.DividendData ();
-		//	var notOk = data.LoadFromFile (Path.Combine(TestContext.CurrentContext.TestDirectory, "invalid.xlsx"));
-		//	Assert.IsFalse (notOk);
-		//}
-	}
+        [Test()]
+        public void InvalidData()
+        {
+            var data = new DividendFlowCalculator.DividendData();
+            var notOk = data.LoadFromFile(Path.Combine(TestContext.CurrentContext.TestDirectory, "invalid.xlsx"));
+            Assert.IsFalse(notOk);
+        }
+    }
 }
