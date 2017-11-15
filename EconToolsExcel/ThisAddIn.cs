@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 using MathNet.Numerics.LinearAlgebra;
-using Office = Microsoft.Office.Core;
-using Microsoft.Office.Tools.Excel;
 using DividendFlowCalculator;
+using System.Windows.Forms;
 
 namespace EconToolsExcel
 {
@@ -54,54 +50,87 @@ namespace EconToolsExcel
             return true;
         }
 
-        private void ReadData()
+        public void ReadData()
         {
-            Excel.Range selection = Application.Selection as Excel.Range;
+            Excel.Range selection = Application.Selection;
 
-            int rows = selection.Rows.Count;
-            int columns = selection.Columns.Count;
+            int start_row, end_row;
+            int start_col, end_col;
+            int length;
+            int matrix_size;
+            int vector_size;
 
-            int length = columns;
-            int matrixSize = length * length;
-            int vectorSize = length;
+            var test = (selection.get_Item(1, 1) as Excel.Range).Cells.Value2;
 
-            List<double> vals = new List<double>();
-
-            for (int rowIndex = 1; rowIndex <= rows; ++rowIndex)
+            dd.companies = new List<string>();
+            if (test is double)
             {
-                for (int colIndex = 1; colIndex <= columns; ++colIndex)
+                start_row = 1;
+                end_row = selection.Rows.Count;
+
+                start_col = 1;
+                end_col = selection.Columns.Count;
+                
+                for (int companyIndex = 2; companyIndex <= end_col + 1; ++companyIndex)
                 {
-                    Excel.Range cell = selection.get_Item(rowIndex, colIndex) as Excel.Range;
+                    dd.companies.Add(Application.ActiveSheet.Cells[1, companyIndex].Value);
+                }
+            }
+            else
+            {
+                start_row = 2;
+                end_row = selection.Rows.Count;
+
+                start_col = 2;
+                end_col = selection.Columns.Count;
+                
+                for (int companyIndex = start_col; companyIndex <= end_col; ++companyIndex)
+                {
+                    dd.companies.Add(selection[start_row - 1, companyIndex].Value);
+                }
+            }
+
+            length = end_col - start_col + 1;
+            matrix_size = length * length;
+            vector_size = length;
+            
+            List<double> sharehodling = new List<double>();
+            List<double> rest = new List<double>();
+
+            for (int rowIndex = start_row; rowIndex <= end_col; ++rowIndex)
+            {
+                for (int colIndex = start_col; colIndex <= end_col; ++colIndex)
+                {
+                    Excel.Range cell = selection[rowIndex, colIndex];
+                    sharehodling.Add(cell.Value2);
+                }
+            }
+
+            for (int rowIndex = end_row - 2; rowIndex <= end_row; ++rowIndex)
+            {
+                for (int colIndex = start_col; colIndex <= end_col; ++colIndex)
+                {
+                    Excel.Range cell = selection[rowIndex, colIndex];
                     if (cell.Value2 != null)
                     {
-                        vals.Add(cell.Value2);
+                        rest.Add(cell.Value2);
+                    }
+                    else
+                    {
+                        rest.Add(0.0);
                     }
                 }
             }
 
-            dd.shareholdings = Matrix<double>.Build.DenseOfRowMajor(length, length, vals.Take(matrixSize));
-            dd.outside = Matrix<double>.Build.DenseOfDiagonalArray(vals.Skip(matrixSize).Take(vectorSize).ToArray());
-            dd.remainder = Matrix<double>.Build.DenseOfDiagonalArray(vals.Skip(matrixSize + vectorSize).Take(vectorSize).ToArray());
-            dd.dividends = Matrix<double>.Build.DenseOfColumnMajor(length, 1, vals.Skip(matrixSize + 2 * vectorSize).Take(vectorSize));
-        }
-
-        private void ReadCompanies()
-        {
-            Excel.Range selection = Application.Selection as Excel.Range;
-            int columns = selection.Columns.Count;
-            int length = columns;
-
-            dd.companies = new List<string>();
-            for (int companyIndex = 2; companyIndex <= length + 1; ++companyIndex)
-            {
-                dd.companies.Add(Application.ActiveSheet.Cells[1, companyIndex].Value);
-            }
+            dd.shareholdings = Matrix<double>.Build.DenseOfRowMajor(length, length, sharehodling);
+            dd.outside = Matrix<double>.Build.DenseOfDiagonalArray(rest.Take(vector_size).ToArray());
+            dd.remainder = Matrix<double>.Build.DenseOfDiagonalArray(rest.Skip(vector_size).Take(vector_size).ToArray());
+            dd.dividends = Matrix<double>.Build.DenseOfColumnMajor(length, 1, rest.Skip(2 * vector_size).Take(vector_size));
         }
 
         public void AddOwnershipWorksheet()
         {
             ReadData();
-            ReadCompanies();
 
             Excel.Worksheet ownershipWorksheet;
             ownershipWorksheet = (Excel.Worksheet)this.Application.Worksheets.Add(After: Application.ActiveWorkbook.Sheets[Application.ActiveWorkbook.Sheets.Count]);
@@ -113,13 +142,12 @@ namespace EconToolsExcel
         public void AddDividendWorksheet()
         {
             ReadData();
-            ReadCompanies();
 
             Excel.Worksheet dynamicDividendFlow;
             dynamicDividendFlow = (Excel.Worksheet)this.Application.Worksheets.Add(After: Application.ActiveWorkbook.Sheets[Application.ActiveWorkbook.Sheets.Count]);
             dynamicDividendFlow.Name = "DynamicDividendFlow";
 
-            WriteMatrixToWorksheet(dynamicDividendFlow, dd.dynamicDividend, Enumerable.Repeat(dd.companies, 3).SelectMany(x => x).ToList(), Enumerable.Range(1, dd.dynamicDividend.ColumnCount).Select(x => x.ToString()).ToList());
+            WriteMatrixToWorksheet(dynamicDividendFlow, dd.dynamicDividend / 100, Enumerable.Repeat(dd.companies, 3).SelectMany(x => x).ToList(), Enumerable.Range(1, dd.dynamicDividend.ColumnCount).Select(x => x.ToString()).ToList());
         }
 
         #region VSTO generated code
