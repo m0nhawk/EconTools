@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>DividendsCalcTest</RootNamespace>
     <AssemblyName>DividendsCalcTest</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>

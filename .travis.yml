@@ -1,10 +1,12 @@
 language: csharp
 solution: EconTools.sln
+os: windows
 mono:
-  - 4.4.2
+  - none
 install:
+  - choco install nuget.commandline
   - nuget restore EconTools.sln
   - nuget install NUnit.Console -Version 3.7.0 -OutputDirectory testrunner
 script:
-  - xbuild /p:Configuration=Release EconTools.sln
-  - mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./DividendFlowCalculatorTest/bin/Release/DividendsCalcTest.dll
+  - dotnet msbuild EconTools.sln -p:Configuration=Release
+#  - mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./DividendFlowCalculatorTest/bin/Release/DividendsCalcTest.dll
